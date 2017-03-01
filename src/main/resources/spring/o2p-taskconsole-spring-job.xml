@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       "
+	default-lazy-init="false">
+	
+	<bean id="jobLogService" class="com.asiainfo.integration.o2p.task.smo.impl.JobLogServiceImpl">
+		<property name="taskJobDAO">
+			<ref bean="taskJobDAO" />
+		</property>
+	</bean>
+	<bean id="JobListener" class="com.asiainfo.integration.o2p.task.smo.job.listener.QuartzJobListener">
+		<property name="jobLogService" ref="jobLogService"></property>
+	</bean>
+	<bean id="SchedulerListener" class="com.asiainfo.integration.o2p.task.smo.job.listener.QuartzSchedulerListener">
+		<property name="jobLogService" ref="jobLogService"></property>
+		<property name="quartzManager" ref="quartzManager"></property>
+	</bean>
+	<bean id="TriggerListener" class="com.asiainfo.integration.o2p.task.smo.job.listener.QuartzTriggerListener">
+		<property name="jobLogService" ref="jobLogService"></property>
+		<property name="quartzManager" ref="quartzManager"></property>
+	</bean>
+	<bean id="taskCacheService" class="com.asiainfo.integration.o2p.task.service.Impl.TaskCacheService">
+		<property name="cacheFactory"><ref bean="cacheFactory"/></property>
+	</bean>
+	
+ 	<!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
+    <bean id="schedFactory" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="globalJobListeners" ref="JobListener"></property>
+		<property name="schedulerListeners" ref="SchedulerListener"></property>
+		<property name="globalTriggerListeners" ref="TriggerListener"></property>
+		<property name="dataSource" ref="common-dataSource" />
+		<property name="configLocation">
+            	<value>classpath:job/quartz.properties</value>
+        </property>
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey"/>
+        <!--
+        <property name="dataSource">       
+             <ref bean="quartzDataSource"/>   
+        </property>
+          -->   
+   </bean> 	
+   
+   <bean id="quartzManager" class="com.asiainfo.integration.o2p.task.common.quartz.QuartzManager" destroy-method="shutdown">
+		<property name="sched" ref="schedFactory"></property>
+   </bean>
+   
+   <bean id="errorStrategyService" class="com.asiainfo.integration.o2p.task.service.Impl.ErrorStrategyImpl"></bean>
+   
+   <bean id="jobConsoleService" class="com.asiainfo.integration.o2p.task.smo.impl.JobConsoleServiceImpl" >
+		<property name="taskJobDAO">
+			<ref bean="taskJobDAO" />
+		</property>
+		<property name="jobLogService">
+			<ref bean="jobLogService" />
+		</property>
+		<property name="startFlag">
+			<value>${subpub.quarzt.startFlag}</value>
+		</property>
+		<property name="quartzManager">
+			<ref bean="quartzManager" />
+		</property>
+		<property name="taskCacheService">
+			<ref bean="taskCacheService"/>
+		</property>
+	</bean>
+	
+</beans>

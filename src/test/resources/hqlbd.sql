@@ -1,0 +1,48 @@
+CREATE TABLE exception_deal_info (
+  EXCEPTION_ID decimal(9) NOT NULL,
+  SER_INVOKE_INS_ID decimal(9) ,
+  SERVICE_ID decimal(9) ,
+  COMPONENT_ID decimal(9) ,
+  MESSAGE_FLOW_ID decimal(9) ,
+  END_POINT_ID decimal(9) ,
+  MESSAGE_BO varchar(2000),
+  TRY_NUM decimal(2) ,
+  UPDATE_DATE date ,
+  CREATE_DATE date ,
+  EXCEPTION_CODE varchar(2048) ,
+  TRY_STATUS decimal(1) ,
+  EXCEPTION_STACK varchar(2048) ,
+  SERINVOKEINS_NAME varchar(100) ,
+  SERVICE_NAME varchar(100) ,
+  COMPONENT_NAME varchar(100) ,
+  MESSAGEFLOW_NAME varchar(100) ,
+  ENDPOINT_NAME varchar(100) ,
+  TRAN_ID varchar(40) ,
+  EXCEPTION_QUEUE_NAME varchar(100) ,
+  PRIMARY KEY (EXCEPTION_ID)
+);
+insert into exception_deal_info(EXCEPTION_ID,TRY_NUM) values(100018301,1);
+
+CREATE TABLE exception_deal_info_his (
+  EXCEPTION_ID decimal(9) NOT NULL,
+  SER_INVOKE_INS_ID decimal(9) ,
+  SERVICE_ID decimal(9) ,
+  COMPONENT_ID decimal(9) ,
+  MESSAGE_FLOW_ID decimal(9) ,
+  END_POINT_ID decimal(9) ,
+  MESSAGE_BO varchar(2000),
+  TRY_NUM decimal(2) ,
+  UPDATE_DATE timestamp ,
+  CREATE_DATE timestamp ,
+  EXCEPTION_CODE varchar(2048) ,
+  TRY_STATUS decimal(1) ,
+  EXCEPTION_STACK varchar(2048) ,
+  SERINVOKEINS_NAME varchar(100) ,
+  SERVICE_NAME varchar(100) ,
+  COMPONENT_NAME varchar(100) ,
+  MESSAGEFLOW_NAME varchar(100) ,
+  ENDPOINT_NAME varchar(100) ,
+  TRAN_ID varchar(40) ,
+  EXCEPTION_QUEUE_NAME varchar(100) ,
+  PRIMARY KEY (EXCEPTION_ID)
+);

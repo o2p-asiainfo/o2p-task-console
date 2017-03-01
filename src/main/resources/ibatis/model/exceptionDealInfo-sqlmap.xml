@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.integration.o2p.task.dao.Mapper.IExceptionDealInfoDao">
+	
+	<!-- 可以配置多个结果映射信息描述 -->
+	<resultMap id="ExceptionDealInfoResult" type="com.ailk.eaap.op2.bo.ExceptionDealInfo">
+		<result property="exceptionId" column="EXCEPTION_ID"/>
+		<result property="serInvokeInsId" column="SER_INVOKE_INS_ID"/>
+		<result property="serviceId" column="SERVICE_ID"/>
+		<result property="componentId" column="COMPONENT_ID"/>
+		<result property="messageFlowId" column="MESSAGE_FLOW_ID"/>
+		<result property="endPointId" column="END_POINT_ID"/>
+		<result property="messageBoByte" column="MESSAGE_BO"/>
+		<result property="tryNum" column="TRY_NUM"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="updateDate" column="UPDATE_DATE"/>
+		<result property="exceptionCode" column="EXCEPTION_CODE"/>
+		<result property="tryStatus" column="TRY_STATUS"/>
+		<result property="exceptionStack" column="EXCEPTION_STACK"/>
+		
+		<result property="serInvokeInsName" column="SERINVOKEINS_NAME"/>
+		<result property="serviceName" column="SERVICE_NAME"/>
+		<result property="componentName" column="COMPONENT_NAME"/>
+		<result property="messageFlowName" column="MESSAGEFLOW_NAME"/>
+		<result property="endPointName" column="ENDPOINT_NAME"/>
+		
+		<result property="tranId" column="TRAN_ID"/>
+		<result property="exceptionQueueName" column="EXCEPTION_QUEUE_NAME"/>
+		
+		<result property="reTryResultDate" column="RETRY_RESULT_DATE"/>
+	</resultMap>
+	
+	<select id="queryExceptionDealInfoPage"  parameterType="java.util.HashMap"	resultMap="ExceptionDealInfoResult">
+		select * from  EXCEPTION_DEAL_INFO	
+			<trim prefix="WHERE" prefixOverrides="and">
+				<if test="serInvokeInsId != null">
+					SER_INVOKE_INS_ID = #{serInvokeInsId}
+				</if>
+				<if test="messageFlowId != null">
+					and MESSAGE_FLOW_ID = #{messageFlowId}
+				</if>
+				<if test="endPointId != null">
+					and END_POINT_ID = #{endPointId}
+				</if>
+				<if test="tryStatus != null">
+					and TRY_STATUS = #{tryStatus}
+				</if>
+				<if test="serviceId != null">
+					and SERVICE_ID = #{serviceId}
+				</if>
+				<if test="tryNum != null">
+					and #{tryNum} >= TRY_NUM
+				</if>
+            </trim>
+            order by CREATE_DATE desc
+	</select>
+	
+	<select id="queryExceptionDealInfoCountByObjId"  parameterType="java.lang.Integer"	resultType="java.lang.Integer">
+		select count(*) from  EXCEPTION_DEAL_INFO	where SER_INVOKE_INS_ID = #{objId} and TRY_STATUS not in ('X', 'C')
+	</select>
+	
+	<select id="queryExceptionDealInfoById" parameterType="java.lang.Integer" resultMap="ExceptionDealInfoResult">
+		select * from EXCEPTION_DEAL_INFO where exception_id = #{id}
+	</select>
+	
+	<update id="updateExceptionDealInfo" parameterType="com.ailk.eaap.op2.bo.ExceptionDealInfo">
+		UPDATE  EXCEPTION_DEAL_INFO  SET 
+		
+		UPDATE_DATE = #{updateDate},
+		TRY_NUM = #{tryNum},
+		TRY_STATUS = #{tryStatus}
+		
+		WHERE  EXCEPTION_ID = #{exceptionId}
+	</update>
+	
+</mapper>

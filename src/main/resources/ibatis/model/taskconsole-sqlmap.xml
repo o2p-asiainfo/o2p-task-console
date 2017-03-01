@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="taskjob">
+ 	<resultMap type="com.ailk.eaap.op2.bo.GatherCycle" id="gatherCycleBeanMap">
+ 		  <result property="gcCd" column="GC_CD"    jdbcType="DECIMAL"/>
+ 		  <result property="tenantId" column="tenant_id" jdbcType="DECIMAL"/>
+ 	      <result property="name" column="NAME"    jdbcType="VARCHAR"/>
+ 	      <result property="gcSEExp" column="GC_S_E_EXP"    jdbcType="VARCHAR"/>
+ 	      <result property="gcDesc" column="GC_DESC"    jdbcType="VARCHAR"/>
+   </resultMap>	
+ 	<resultMap type="com.ailk.eaap.o2p.task.model.TaskContentBean" id="taskContentMap">
+ 		  <result property="taskId" column="TASK_ID"  jdbcType="DECIMAL"/>
+ 		  <result property="tenantId" column="tenant_id" jdbcType="DECIMAL"/>
+ 	      <result property="taskCode" column="TASK_CODE"    jdbcType="VARCHAR"/>
+ 	      <result property="taskName" column="TASK_NAME"    jdbcType="VARCHAR"/>
+ 	      <result property="gcCd" column="GC_CD"    jdbcType="VARCHAR"/>
+ 	      <result property="gcExp" column="GC_EXP"    jdbcType="VARCHAR"/>
+ 	      <result property="threadNumber" column="THREAD_NUMBER"    jdbcType="DECIMAL"/>
+ 	      <result property="startDate" column="STATE_DATE"    jdbcType="DATE"/>
+ 	      <result property="stopDate" column="STOP_DATE"    jdbcType="DATE"/>
+ 	      <result property="taskState" column="TASK_STATE"    jdbcType="CHAR"/>
+ 	      <result property="stateLastDate" column="state_last_date"    jdbcType="DATE"/>
+ 	      <result property="taskDesc" column="task_desc"    jdbcType="VARCHAR"/>
+ 	      <result property="taskType" column="task_type" jdbcType="VARCHAR"/>
+ 	      <result property="taskStyle" column="task_style" jdbcType="VARCHAR"/>
+ 	      <result property="parallelismDegree" column="PARALLELISM_DEGREE" jdbcType="INTEGER"/>
+ 	      <association property="taskRelaObj" column="TASK_ID" select="taskjob.getRelaObjByTaskId" jdbcType="DECIMAL"/>
+ 	      <association property="taskTypeObj" column="task_type" select="taskjob.getTaskTypeByCd" jdbcType="DECIMAL"/>
+ 	      <association property="taskStyleObj" column="task_Style" select="taskjob.getTaskStyleById" jdbcType="DECIMAL"/>
+   </resultMap>
+ 	<resultMap type="com.ailk.eaap.o2p.task.model.TaskType" id="taskTypeBean">
+ 		  <result property="taskTypeId" column="TASK_TYPE_ID"  jdbcType="DECIMAL"/>
+ 		  <result property="tenantId" column="tenant_id" jdbcType="DECIMAL"/>
+ 	      <result property="taskTypeName" column="TASK_TYPE_NAME"    jdbcType="VARCHAR"/>
+ 	      <result property="taskTypeCd" column="TASK_TYPE"    jdbcType="DECIMAL"/>
+ 	      <result property="queueName" column="QUEUE_NAME"    jdbcType="VARCHAR"/>
+ 	      <result property="objTypeCd" column="OBJ_TYPE_CD"    jdbcType="DECIMAL"/>
+   </resultMap>
+   
+ 	<resultMap type="com.ailk.eaap.o2p.task.model.TaskContentBean" id="taskMap">
+ 		  <result property="taskId" column="TASK_ID"  jdbcType="DECIMAL"/>
+ 		  <result property="tenantId" column="tenant_id" jdbcType="DECIMAL"/>
+ 	      <result property="taskCode" column="TASK_CODE"    jdbcType="VARCHAR"/>
+ 	      <result property="taskName" column="TASK_NAME"    jdbcType="VARCHAR"/>
+ 	      <result property="gcCd" column="GC_CD"    jdbcType="VARCHAR"/>
+ 	      <result property="gcExp" column="GC_S_E_EXP"    jdbcType="VARCHAR"/>
+ 	      <result property="errorStrategyExpression" column="STRATEGY_EXPRESSION" jdbcType="VARCHAR"/>
+ 	      <result property="threadNumber" column="THREAD_NUMBER"    jdbcType="DECIMAL"/>
+ 	      <result property="startDate" column="STATE_DATE"    jdbcType="DATE"/>
+ 	      <result property="stopDate" column="STOP_DATE"    jdbcType="DATE"/>
+ 	      <result property="stateLastDate" column="STATE_LAST_DATE"    jdbcType="DATE"/>
+ 	      <result property="taskState" column="TASK_STATE"    jdbcType="CHAR"/>
+ 	      <result property="taskDesc" column="TASK_DESC"    jdbcType="VARCHAR"/>
+ 	      <result property="name" column="NAME"    jdbcType="VARCHAR"/>
+ 	      <result property="taskType" column="task_type" jdbcType="VARCHAR"/>
+ 	      <result property="taskStyle" column="task_style" jdbcType="VARCHAR"/>
+ 	      <result property="enableLog" column="ENABLE_LOG"    jdbcType="CHAR"/>
+ 	      <result property="parallelismDegree" column="PARALLELISM_DEGREE" jdbcType="INTEGER"/>
+ 	      <association property="taskRelaObj" column="TASK_ID" select="taskjob.getRelaObjByTaskId" jdbcType="DECIMAL"/>
+ 	      <association property="taskTypeObj" column="task_type" select="taskjob.getTaskTypeByCd" jdbcType="DECIMAL"/>
+ 	      <association property="taskStyleObj" column="task_Style" select="taskjob.getTaskStyleById" jdbcType="DECIMAL"/>
+   </resultMap>
+   
+ 	<resultMap type="com.ailk.eaap.o2p.fileExchange.model.TaskJobLogBean" id="taskLogMap">
+ 		  <result property="taskLogId" column="TASK_LOG_ID"  jdbcType="DECIMAL"/>
+ 		  <result property="tenantId" column="tenant_id" jdbcType="DECIMAL"/>
+ 	      <result property="taskId" column="TASK_ID"    jdbcType="DECIMAL"/>
+ 	      <result property="logType" column="LOG_TYPE"    jdbcType="VARCHAR"/>
+ 	      <result property="schdInstId" column="SCHD_INST_ID"    jdbcType="VARCHAR"/>
+ 	      <result property="eventType" column="EVENT_TYPE"    jdbcType="VARCHAR"/>
+ 	      <result property="sessionId" column="SESSION_ID"    jdbcType="DECIMAL"/>
+ 	      <result property="jobName" column="JOB_NAME"    jdbcType="DATE"/>
+ 	      <result property="jobClass" column="JOB_CLASS"    jdbcType="DATE"/>
+ 	      <result property="staffNo" column="STAFF_NO"    jdbcType="DATE"/>
+ 	      <result property="ip" column="IP"    jdbcType="CHAR"/>
+ 	      <result property="info" column="INFO"    jdbcType="VARCHAR"/>
+ 	      <result property="createDT" column="CREATE_DT"    jdbcType="VARCHAR"/>
+   </resultMap>
+   
+   <resultMap type="com.ailk.eaap.o2p.task.model.TaskStyle" id="taskStyleBean">
+ 		  <result property="taskStyleId" column="TASK_STYLE_ID"  jdbcType="DECIMAL"/>
+ 	      <result property="taskStyleName" column="TASK_STYLE_NAME"    jdbcType="VARCHAR"/>
+ 	      <result property="taskStyle" column="TASK_STYLE"    jdbcType="DECIMAL"/>
+ 	      <result property="taskStyleDesc" column="TASK_STYLE_DESC"    jdbcType="VARCHAR"/>
+ 	      <result property="state" column="STATE"    jdbcType="DECIMAL"/>
+   </resultMap>
+   
+   <resultMap type="com.ailk.eaap.o2p.task.model.TaskRelaObj" id="taskRelaObjMap">
+ 		  <result property="id" column="TASK_RELA_OBJ_ID"  jdbcType="DECIMAL"/>
+ 	      <result property="objTypeCd" column="OBJ_TYPE_CD"    jdbcType="DECIMAL"/>
+ 	      <result property="objId" column="OBJ_ID"    jdbcType="DECIMAL"/>
+ 	      <result property="taskId" column="TASK_ID"    jdbcType="DECIMAL"/>
+ 	      <result property="status" column="STATE"    jdbcType="VARCHAR"/>
+   </resultMap>
+   
+	<!--新增任务  -->
+	<insert id="ADD_TASK_MANAGER" parameterType="java.util.Map">
+        <selectKey resultType="int" keyProperty="taskId" order="BEFORE">
+        	<if test="_databaseId  == 'mysql'">SELECT nextval('SEQ_TASK_MANAGER');</if>
+			<if test="_databaseId  == 'oracle'">SELECT SEQ_TASK_MANAGER.NEXTVAL FROM DUAL</if>
+		</selectKey>
+	  INSERT INTO TASK_MANAGER
+	  <trim prefix="(" suffix=")" suffixOverrides=",">
+		  	TASK_ID,
+		  	<if test="taskCode != null">TASK_CODE,</if>
+		  	<if test="taskName != null">TASK_NAME,</if>
+		  	<if test="gcCd != null">GC_CD,</if>
+		  	<if test="threadNumber != null">THREAD_NUMBER,</if>
+		  	<if test="startDate != null">STATE_DATE,</if>
+		  	<if test="stopDate != null">STOP_DATE,</if>
+		  	<if test="taskState != null">TASK_STATE,</if>
+		  	<if test="stateLastDate != null">STATE_LAST_DATE,</if>
+		  	<if test="taskDesc != null">TASK_DESC,</if>
+		  	<if test="taskType != null">TASK_TYPE,</if>
+		  	<if test="taskStyle != null">TASK_STYLE,</if>
+		  	<if test="tenantId != null">TENANT_ID,</if>
+	 </trim>
+	  <trim prefix=" values (" suffix=")" suffixOverrides="," >
+	        #{taskId},
+			<if test="taskCode != null">#{taskCode},</if>
+			<if test="taskName != null">#{taskName},</if>
+			<if test="gcCd != null">#{gcCd},</if>
+			<if test="threadNumber != null">#{threadNumber},</if>
+			<if test="startDate != null">#{startDate},</if>
+			<if test="stopDate != null">#{stopDate},</if>
+			<if test="taskState != null">#{taskState},</if>
+			<if test="stateLastDate != null">#{stateLastDate},</if>
+			<if test="taskDesc != null">#{taskDesc},</if>
+			<if test="taskType != null">#{taskType},</if>
+			<if test="taskStyle != null">#{taskStyle},</if>
+			<if test="tenantId != null">#{tenantId},</if>
+		</trim>
+	</insert>
+	
+	<select id="getTaskStyleById" resultMap="taskStyleBean" parameterType="java.lang.Integer" >
+		SELECT * FROM task_style WHERE task_style = #{task_style} limit 0, 1
+	</select>
+	
+	 <insert id="ADD_TASK_RELA_OBJ" parameterType="java.util.Map">
+        <selectKey resultType="int" keyProperty="taskRelaObjId" order="BEFORE">
+			<if test="_databaseId  == 'mysql'">SELECT nextval('SEQ_TASK_RELA_OBJ');</if>
+			<if test="_databaseId  == 'oracle'">SELECT SEQ_TASK_RELA_OBJ.NEXTVAL FROM DUAL</if>
+		</selectKey>
+	  INSERT INTO TASK_RELA_OBJ
+	  <trim prefix="(" suffix=")" suffixOverrides=",">
+		  TASK_RELA_OBJ_ID,
+		  <if test="taskId != null">TASK_ID,</if>
+		  <if test="tenantId != null">TENANT_ID,</if>
+		  <if test="objId != null">OBJ_ID,</if>
+		  <if test="objTypeCd != null">OBJ_TYPE_CD,</if>
+		  <if test="state != null">STATE,</if>
+		  CREATE_DT,
+	  </trim>
+	  <trim prefix=" values (" suffix=")" suffixOverrides="," >
+		  #{taskRelaObjId},
+		  <if test="taskId != null">#{taskId},</if>
+		  <if test="tenantId != null">#{tenantId},</if>
+		  <if test="objId != null">#{objId},</if>
+		  <if test="objTypeCd != null">#{objTypeCd},</if>
+		  <if test="state != null">#{state},</if>
+		  
+		  <if test="_databaseId  == 'mysql'">now(),</if>
+		  <if test="_databaseId  == 'oracle'">sysdate,</if>
+	   </trim>
+	</insert>
+	
+	<!-- 任务业务实体对象 -->
+	<select id="getRelaObjByTaskId" resultMap="taskRelaObjMap" parameterType="java.lang.Integer"  >
+		SELECT * FROM TASK_RELA_OBJ WHERE TASK_ID = #{TASK_ID} limit 0, 1
+	</select>
+	
+	<!-- 任务业务实体对象 -->
+	<select id="getTaskTypeByCd" resultMap="taskTypeBean" parameterType="java.lang.Integer"  >
+		SELECT * FROM task_type WHERE task_type_id = #{task_type} limit 0, 1
+	</select>
+	
+	 <select id="GET_TASK_COUNT" resultType="java.lang.Integer" parameterType="java.util.Map"  >
+	 	SELECT COUNT(1) FROM TASK_MANAGER T4 
+	 		,GATHER_CYCLE T5 where T4.GC_CD = T5.GC_CD AND T5.tenant_id=#{tenantId}
+	 		 AND EXISTS (SELECT 1 FROM TASK_TYPE T6 WHERE T4.TASK_TYPE =  T6.TASK_TYPE_ID and T6.TENANT_ID=#{tenantId})
+	 		 <if test="taskId != null"> AND T4.TASK_ID = #{taskId}</if>
+	 		 <if test="tenantId != null"> 
+			   		AND (T4.TENANT_ID = #{tenantId} <if test="tenantId == 1"> or T4.TENANT_ID is null</if>)
+			  </if>
+	 		 <if test="taskName != null"> AND T4.TASK_NAME LIKE concat('%', concat(#{taskName}, '%'))</if>
+	 		 <if test="statu != null"> AND T4.TASK_STATE =#{statu}</if>
+	 </select>
+	 
+	<select id="GET_TASK_LIST_PAGE" resultMap="taskMap"  >
+				SELECT T4.TASK_ID ,
+					   T4.TENANT_ID ,
+				       T4.TASK_CODE ,
+				       T4.TASK_NAME ,
+				       T4.TASK_STATE,
+				       T4.GC_CD ,
+				       T6.STRATEGY_EXPRESSION,
+				       T5.GC_S_E_EXP ,
+				       T4.THREAD_NUMBER ,
+				       T4.STATE_DATE, 
+				       T4.STOP_DATE, 
+				       T4.STATE_LAST_DATE, 
+				       T4.TASK_DESC ,
+				       T4.ENABLE_LOG,
+				       T4.TASK_TYPE,
+				       T4.TASK_STYLE,
+				       T4.PARALLELISM_DEGREE,
+				       T5.NAME
+				  FROM task_manager T4
+					LEFT JOIN GATHER_CYCLE T5 ON (T5.GC_CD = T4.GC_CD AND T5.tenant_id=#{tenantId})
+					LEFT JOIN ERROR_STRATEGY T6 ON (T6.STRATEGY_ID = T4.ERROR_STRATEGY_ID AND T6.tenant_id=#{tenantId})
+				  WHERE EXISTS (SELECT 1 FROM TASK_TYPE T6 WHERE T4.TASK_TYPE = T6.TASK_TYPE_ID and T6.TENANT_ID=#{tenantId}) 
+			   <if test="taskId != null"> AND T4.TASK_ID = #{taskId}</if>
+			   <if test="tenantId != null"> 
+			   		AND (T4.TENANT_ID = #{tenantId} <if test="tenantId == 1"> or T4.TENANT_ID is null</if>)
+			   </if>
+	 		   <if test="taskName != null"> AND T4.TASK_NAME LIKE concat('%', concat(#{taskName}, '%'))</if>
+	 		 <if test="statu != null"> AND T4.TASK_STATE =#{statu}</if>
+				ORDER BY T4.TASK_ID ASC
+	  </select>
+	  
+	<!--修改任务  YUAN BIN UPDATE-->
+	<update id="UPDATE_TASK_CONTENT"  parameterType="com.ailk.eaap.o2p.task.model.TaskContentBean">
+	 UPDATE TASK_MANAGER 
+	 	<trim prefix="set" prefixOverrides=",">
+	 		<if test="taskName != null"> ,TASK_NAME=#{taskName}</if>
+	 		<if test="gcCd != null"> ,GC_CD=#{gcCd}</if>
+	 		<if test="threadNumber != null"> ,THREAD_NUMBER=#{threadNumber}</if>
+	 		<if test="startDate != null"> ,STATE_DATE=#{startDate}</if>
+	 		<if test="stopDate != null"> ,STOP_DATE=#{stopDate}</if>
+	 		<if test="taskDesc != null"> ,TASK_DESC=#{taskDesc}</if>
+	 		<if test="stateLastDate != null"> ,STATE_LAST_DATE=#{stateLastDate}</if>
+	 		<if test="taskState != null"> ,TASK_STATE=#{taskState}</if>
+	 		<!-- <if test="taskType != null"> ,TASK_TYPE=#{taskType}</if> -->
+	 		<if test="taskStyle != null"> ,TASK_STYLE=#{taskStyle}</if>
+	 	</trim>
+		 WHERE TASK_ID = #{taskId} and TENANT_ID=#{tenantId}
+	</update>
+	
+	<!-- 修改实体对象 -->
+	<update id="UPDATE_TASK_RELA_OBJ"  parameterType="com.ailk.eaap.o2p.task.model.TaskRelaObj">
+	 UPDATE TASK_RELA_OBJ 
+	 	<trim prefix="set" prefixOverrides=",">
+	 		<if test="objId != null"> ,obj_id=#{objId}</if>
+	 		<if test="objTypeCd != null"> ,obj_type_cd=#{objTypeCd}</if>
+	 		<if test="status != null"> ,state=#{status}</if>
+	 	</trim>
+          WHERE TASK_ID = #{taskId} and TENANT_ID=#{tenantId}
+	</update>
+	
+	<!--删除任务  -->
+	<update id="DELETE_TASK" parameterType="java.util.Map">
+		DELETE FROM TASK_MANAGER  WHERE TASK_ID=#{taskId} and TENANT_ID=#{tenantId}
+	</update>
+	
+	<!--添加日志  -->
+	<insert id="ADD_TASK_LOG" parameterType="com.ailk.eaap.o2p.fileExchange.model.TaskJobLogBean">
+		 INSERT INTO TASK_LOG 
+	  <trim prefix="(" suffix=")" suffixOverrides=",">
+	  	create_dt,
+	  	<if test="taskId != null"> task_id,</if>
+	  	<if test="logType != null"> log_type,</if>
+	  	<if test="jobName != null"> job_name,</if>
+	  	<if test="schdInstId != null"> schd_inst_id,</if>
+	  	<if test="eventType != null"> event_type,</if>
+	  	<if test="sessionId != null"> session_id,</if>
+	  	<if test="jobClass != null"> job_class,</if>
+	  	<if test="staffNo != null"> staff_no,</if>
+	  	<if test="ip != null"> ip,</if>
+	  	<if test="info != null"> info,</if>
+	  	<if test="errorInfo != null"> error_info,</if>
+	  	<if test="tenantId != null"> tenant_id,</if>
+	  </trim>
+	  values
+	  <trim prefix="(" suffix=")" suffixOverrides=",">
+	  	<if test="_databaseId  == 'mysql'">now(),</if>
+		<if test="_databaseId  == 'oracle'">sysdate,</if>
+		<if test="_databaseId  == 'hsqldb'">curDate(),</if>
+	  	<if test="taskId != null"> #{taskId},</if>
+	  	<if test="logType != null"> #{logType},</if>
+	  	<if test="jobName != null"> #{jobName},</if>
+	  	<if test="schdInstId != null"> #{schdInstId},</if>
+	  	<if test="eventType != null"> #{eventType},</if>
+	  	<if test="sessionId != null"> #{sessionId},</if>
+	  	<if test="jobClass != null"> #{jobClass},</if>
+	  	<if test="staffNo != null"> #{staffNo},</if>
+	  	<if test="ip != null"> #{ip},</if>
+	  	<if test="info != null"> #{info},</if>
+	  	<if test="errorInfo != null"> #{errorInfo},</if>
+	  	<if test="tenantId != null"> #{tenantId},</if>
+	  </trim>
+	</insert>	
+	
+	
+	<!--任务执行日志总数  -->
+	<select id="GET_TASK_LOG_COUNT" resultType="java.lang.Integer"  >
+		SELECT COUNT(1) FROM TASK_LOG T
+		<trim prefix="WHERE" prefixOverrides="and">
+			<if test="tenantId != null"> 
+			   	AND (TENANT_ID = #{tenantId} <if test="tenantId == 1"> or TENANT_ID is null</if>)
+			</if>
+			<if test="jobName != null"> and T.JOB_NAME LIKE concat('%', concat(#{jobName}, '%'))</if>
+			<if test="logType != null"> and T.LOG_TYPE =#{logType}</if>
+			<if test="eventType != null"> and T.EVENT_TYPE =#{eventType}</if>
+		</trim>
+	</select>
+	
+	
+	<select id="GET_TASK_LOG_LIST_PAGE" resultMap="taskLogMap"  >
+				SELECT T.TASK_LOG_ID  ,
+				       T.TASK_ID ,
+				       T.LOG_TYPE ,
+				       T.SCHD_INST_ID ,
+				       T.EVENT_TYPE ,
+				       T.SESSION_ID ,
+				       T.JOB_NAME ,
+				       T.JOB_CLASS ,
+				       T.STAFF_NO ,
+				       T.IP ,
+				       T.INFO ,
+				       T.CREATE_DT
+				  FROM TASK_LOG T
+				  <trim prefix="WHERE" prefixOverrides="and">
+				  	<if test="jobName != null"> and T.JOB_NAME LIKE concat('%', concat(#{jobName}, '%'))</if>
+				  	<if test="logType != null"> and T.LOG_TYPE =#{logType}</if>
+				  	<if test="eventType != null"> and T.EVENT_TYPE =#{eventType}</if>
+				  	<if test="tenantId != null"> 
+			   		AND (T.TENANT_ID = #{tenantId} <if test="tenantId == 1"> or T.TENANT_ID is null</if>)
+			   		</if>
+				  </trim> 
+				  ORDER BY
+					T.TASK_LOG_ID DESC
+	</select>
+	
+	<!--获取周期列表  -->
+	<select id="GET_TASK_CYCLE_LIST_PAGE" resultMap="gatherCycleBeanMap"  >
+		SELECT T.GC_CD, T.NAME, T.GC_S_E_EXP, T.GC_DESC FROM GATHER_CYCLE T
+		  <trim prefix="WHERE" prefixOverrides="and">
+		  	<if test="taskCycleName != null"> and T.NAME LIKE concat('%', concat(#{taskCycleName}, '%'))</if>
+		  	<if test="taskCycleCd != null"> and T.GC_CD = #{taskCycleCd}</if>
+		  	<if test="tenantId != null"> 
+			    AND (T.TENANT_ID = #{tenantId} <if test="tenantId == 1"> or T.TENANT_ID is null</if>)
+			</if>
+		  </trim>
+	</select>
+	<select id="getTaskById" resultMap="taskContentMap"  parameterType="java.util.Map" >
+		SELECT
+			TASK_ID,
+			TENANT_ID,
+			TASK_CODE,
+			TASK_NAME,
+			TASK_STYLE,
+			GC_CD,
+			(
+				SELECT
+					GC.GC_S_E_EXP
+				FROM
+					GATHER_CYCLE GC
+				WHERE
+					GC.GC_CD = TM.GC_CD
+				
+			    	AND GC.TENANT_ID = #{tenantId} 
+				
+			) GC_EXP,
+			THREAD_NUMBER,
+			TASK_DESC,
+			STATE_DATE,
+			STOP_DATE,
+			TASK_TYPE,
+			STATE_LAST_DATE,
+			TASK_STATE,
+			PARALLELISM_DEGREE
+		FROM
+			TASK_MANAGER TM
+		WHERE TM.TASK_ID=#{taskId}
+		
+			    	AND TM.TENANT_ID = #{tenantId} 
+		
+	</select>	
+	<!--获取周期总数  -->
+	<select id="GET_TASK_CYCLE_NUM" resultType="java.lang.Integer"  >
+		SELECT COUNT(1) FROM GATHER_CYCLE T
+		 <trim prefix="WHERE" prefixOverrides="and">
+		 	<if test="taskCycleName != null"> and T.NAME LIKE concat('%', concat(#{taskCycleName}, '%'))</if>
+		 	<if test="taskCycleCd != null"> and T.GC_CD = #{taskCycleCd}</if>
+		 	<if test="tenantId != null"> 
+			   	AND (T.TENANT_ID = #{tenantId} <if test="tenantId == 1"> or T.TENANT_ID is null</if>)
+			</if>
+		 </trim>
+	</select>
+	
+	<!--新增周期  -->
+	<insert id="ADD_CYCLE" parameterType="com.ailk.eaap.op2.bo.GatherCycle">
+	        <selectKey resultType="int" keyProperty="gcCd" order="BEFORE">
+				<if test="_databaseId  == 'mysql'">SELECT nextval('SEQ_GATHER_CYCLE');</if>
+				<if test="_databaseId  == 'oracle'">SELECT SEQ_GATHER_CYCLE.NEXTVAL FROM DUAL</if>
+			</selectKey>
+	  INSERT INTO gather_cycle 
+	  <trim prefix="(" suffix=")" suffixOverrides=",">
+		  GC_CD,
+		  <if test="tenantId != null"> TENANT_ID,</if>
+		  <if test="name != null"> NAME,</if>
+		  <if test="gcSEExp != null"> GC_S_E_EXP,</if>
+		  <if test="gcDesc != null"> GC_DESC,</if>
+	  </trim>
+	  values
+	  <trim prefix="(" suffix=")" suffixOverrides=",">
+	  		#{gcCd},
+	  		<if test="tenantId != null"> #{tenantId},</if>
+	  		<if test="name != null"> #{name},</if>
+		  <if test="gcSEExp != null"> #{gcSEExp},</if>
+		  <if test="gcDesc != null"> #{gcDesc},</if>
+	  </trim>
+	</insert>
+	
+	<!--根据id查询周期  -->
+	<select id="GET_GATHER_CYCLE_BEAN"  parameterType="com.ailk.eaap.op2.bo.GatherCycle" resultMap="gatherCycleBeanMap"  >
+		SELECT T.GC_CD, T.NAME, T.GC_S_E_EXP, T.GC_DESC FROM GATHER_CYCLE T WHERE T.GC_CD=#{gcCd}
+	</select>
+	
+	<!--修改周期  -->
+	<update id="UPDATE_CYCLE" parameterType="com.ailk.eaap.op2.bo.GatherCycle">
+		UPDATE GATHER_CYCLE T SET T.NAME=#{name}, T.GC_S_E_EXP=#{gcSEExp}, T.GC_DESC=#{gcDesc} WHERE T.GC_CD=#{gcCd}
+	</update>
+	
+	<!--删除周期  -->
+	<update id="DELETE_CYCLE" parameterType="com.ailk.eaap.op2.bo.GatherCycle">
+		DELETE FROM GATHER_CYCLE  WHERE GC_CD=#{gcCd}
+	</update>
+	
+	<!--根据周期查询任务数  -->
+	<select id="GET_TASK_COUNT_BY_GCCD" resultType="java.lang.Integer" parameterType="com.ailk.eaap.op2.bo.GatherCycle"  >
+		SELECT COUNT(1) FROM  TASK_MANAGER T WHERE T.GC_CD=#{gcCd}
+	</select>
+	
+	<!--修改任务周期  -->
+	<update id="UPDATE_JOB_CYCLE" parameterType="com.ailk.eaap.o2p.task.model.TaskContentBean">
+		UPDATE TASK_MANAGER T SET T.GC_CD=#{gcCd} WHERE T.TASK_ID=#{taskId}
+	</update>
+	
+	<!--修改线程数  -->
+	<update id="CHANGE_JOB_THREAD_NUM" parameterType="com.ailk.eaap.o2p.task.model.TaskContentBean">
+		 UPDATE TASK_MANAGER T SET T.THREAD_NUMBER=#{threadNumber} WHERE T.TASK_ID=#{taskId}
+	</update>
+	
+	<!--修改任务状态  -->
+	<update id="UPDATE_TASK_STATE" parameterType="com.ailk.eaap.o2p.task.model.TaskContentBean">
+		 UPDATE TASK_MANAGER T SET T.TASK_STATE=#{taskState}, 
+		 T.STATE_LAST_DATE=<if test="_databaseId  == 'mysql'">now()</if><if test="_databaseId  == 'oracle'">sysdate</if> 
+		 <if test="startDate != null">
+			 , T.STATE_DATE=<if test="_databaseId  == 'mysql'">now()</if><if test="_databaseId  == 'oracle'">sysdate</if> 
+		 </if>
+		 <if test="stopDate != null">
+			 , T.STOP_DATE=<if test="_databaseId  == 'mysql'">now()</if><if test="_databaseId  == 'oracle'">sysdate</if> 
+		 </if>
+		 WHERE T.TASK_ID=#{taskId}
+	</update>
+	
+	<!--根据id查询日志  -->
+	<select id="GET_TASK_JOB_LOG_BY_ID"  parameterType="com.ailk.eaap.o2p.fileExchange.model.TaskJobLogBean" resultType="com.ailk.eaap.o2p.fileExchange.model.TaskJobLogBean"  >
+		SELECT TASK_LOG_ID taskLogId,
+	       LOG_TYPE logType,
+	       TASK_ID taskId,
+	       SCHD_INST_ID schdInstId,
+	       EVENT_TYPE eventType,
+	       SESSION_ID sessionId,
+	       JOB_NAME jobName,
+	       JOB_CLASS jobClass,
+	       STAFF_NO staffNo,
+	       IP ip,
+	       INFO info,
+	       date_format(CREATE_DT, '%Y-%m-%d %T') createDT
+	  FROM TASK_LOG
+	 WHERE TASK_LOG_ID = #{taskLogId};
+	</select>
+	
+	<select id="getPublicEndpoint"  parameterType="java.util.Map" resultType="java.lang.Integer">
+			SELECT
+				distinct(s.to_endpoint_id)
+			FROM
+				service_route_config s,
+				endpoint e,
+				ser_invoke_ins n
+			WHERE
+				s.message_flow_id = n.message_flow_id
+			AND n.ser_invoke_ins_id = #{objId}
+			AND s.from_endpoint_id = e.endpoint_id
+			AND e.endpoint_spec_id = '51'
+	</select>
+	
+	<select id="getSerInvokeIns" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+		SELECT T.COMPONENT_ID, SI.SER_INVOKE_INS_ID, SI.SERVICE_ID, T.CODE, SI.MESSAGE_FLOW_ID, SI.STATE,SI.SER_INVOKE_INS_NAME, SI.LOG_LEVEL,SI.AUTH_EXPRESS
+		  FROM SER_INVOKE_INS SI, COMPONENT T, SERVICE S
+		 WHERE SI.COMPONENT_ID = T.COMPONENT_ID AND S.SERVICE_ID=SI.SERVICE_ID AND SI.SER_INVOKE_INS_ID = #{objId}
+	</select>
+	
+	<select id="getService" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+		 SELECT C.VERSION,
+		      C.CONTRACT_ID,
+		      S.SERVICE_CN_NAME,
+		      S.SERVICE_ID,
+		      S.SERVICE_CODE,
+		      S.SERVICE_VERSION,
+		      S.DEFAULT_MSG_FLOW,
+		      S.STATE
+		 FROM SERVICE S, CONTRACT_VERSION C
+		WHERE C.CONTRACT_VERSION_ID = S.CONTRACT_VERSION_ID AND S.SERVICE_ID = #{serviceId}
+	</select>
+	
+	<select id="getComponent" parameterType="java.lang.String" resultType="com.ailk.eaap.op2.bo.Component">
+		SELECT  C.CODE ,C.STATE, O.STATE ORGSTATE, O.ORG_CODE ORGCODE FROM COMPONENT C, ORG O WHERE C.ORG_ID=O.ORG_ID 
+		and C.CODE = #{componentCode}
+	</select>
+	
+	<select id="getTenantIdList" resultType="java.util.HashMap">
+	   SELECT TENANT_ID FROM TENANT WHERE STATUS='A'
+	</select>
+</mapper>

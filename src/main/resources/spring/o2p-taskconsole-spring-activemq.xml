@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       "
+	default-lazy-init="true">
+	
+	<bean class="com.ailk.eaap.o2p.common.spring.config.O2pPropertyPlaceholderConfigurer">
+		<property name="remoteOverride" value="true"></property>
+		<property name="cacheHolder" ref="cacheHolder"></property>
+		<property name="localProperties">
+			<list>
+				<value>eaap_common.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="cacheHolder" class="com.ailk.eaap.o2p.common.spring.config.ZKCfgCacheHolder">
+		<property name="ignoreResourceNotFound" value="true"></property>
+	</bean>
+
+	<bean id="activeMqDao"
+		class="com.asiainfo.integration.o2p.task.dao.activemq.impl.JmsTemplateDao">
+		<property name="jmsTemplate" ref="jmsTemplate"></property>
+	</bean>
+
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="jmsFactory"/>
+	</bean>
+	
+	<bean id="jmsFactory" class="org.apache.activemq.jms.pool.PooledConnectionFactory"
+		destroy-method="stop">
+		<property name="expiryTimeout" value="30000"></property>
+		<property name="connectionFactory">
+			<bean class="org.apache.activemq.ActiveMQConnectionFactory">
+				<property name="brokerURL">
+					<value>${subpub.activemq.brokerURL}</value>
+				</property>
+				<property name="userName">
+					<value>${subpub.activemq.userName}</value>
+				</property>
+				<property name="password">
+					<value>${subpub.activemq.password}</value>
+				</property>
+			</bean>
+		</property>
+	</bean>
+</beans>
